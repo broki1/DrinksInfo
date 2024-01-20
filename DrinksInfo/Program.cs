@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using System.Net.Http;
 
 namespace DrinksInfo;
 
@@ -9,17 +8,10 @@ internal class Program
     {
         HttpClient client = new HttpClient();
 
-        client.DefaultRequestHeaders.Accept.Clear();
+        var drinksInfoAPI = ConfigurationManager.AppSettings.Get("DrinkCategories");
 
-        await GetDrinkCategories(client);
-    }
+        APIController apiController = new APIController(drinksInfoAPI);
 
-    static async Task GetDrinkCategories(HttpClient client)
-    {
-        var drinkCategoriesAPI = ConfigurationManager.AppSettings.Get("DrinkCategories");
-
-        var drinkCategories = await client.GetStringAsync(drinkCategoriesAPI);
-
-        Console.WriteLine(drinkCategories);
+        var drinkCategories = await apiController.GetDrinkCategories(client);
     }
 }
