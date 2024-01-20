@@ -1,17 +1,31 @@
-﻿using System.Configuration;
+﻿using DrinksInfo.Model;
 
 namespace DrinksInfo;
 
 internal class Program
 {
+    static APIController apiController = new APIController();
+
     static async Task Main(string[] args)
     {
-        HttpClient client = new HttpClient();
+        await StartApplication();
+    }
 
-        var drinksInfoAPI = ConfigurationManager.AppSettings.Get("DrinkCategories");
+    static async Task StartApplication()
+    {
+        var endApplication = false;
 
-        APIController apiController = new APIController(drinksInfoAPI);
+        var drinkCategories = await Program.apiController.GetDrinkCategories();
 
-        var drinkCategories = await apiController.GetDrinkCategories(client);
+        Helper.PrintTable(drinkCategories);
+
+        Console.ReadLine();
+
+        var drinks = await Program.apiController.GetDrinksByCategory("beer");
+
+        Helper.PrintTable(drinks);
+
+        Console.ReadLine();
+
     }
 }
