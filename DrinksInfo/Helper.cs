@@ -1,5 +1,4 @@
 ﻿using ConsoleTableExt;
-using DrinksInfo.Model;
 
 namespace DrinksInfo;
 
@@ -15,5 +14,4 @@ internal class Helper
     {
         return str.Trim().ToLower().Replace(" ", "_");
     }
-
 }
