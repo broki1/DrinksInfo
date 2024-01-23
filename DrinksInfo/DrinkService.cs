@@ -1,5 +1,6 @@
 ﻿using DrinksInfo.Model;
 using System.Configuration;
+using System.Reflection;
 using System.Text.Json;
 
 namespace DrinksInfo;
@@ -27,7 +28,7 @@ internal class DrinkService
         return categories;
     }
 
-    internal static async Task<List<Drink>> GetDrinks(string category)
+    internal static async Task<List<DrinkMenuItem>> GetDrinks(string category)
     {
         HttpClient client = new HttpClient();
         client.DefaultRequestHeaders.Accept.Clear();
@@ -44,9 +45,37 @@ internal class DrinkService
         return drinks.Drinks;
     }
 
-    internal static async Task GetDrink(string drink)
+    internal static async Task GetDrink(string drinkId)
     {
+        HttpClient client = new HttpClient();
+        client.DefaultRequestHeaders.Accept.Clear();
+        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
+        var drinkAPI = ConfigurationManager.AppSettings.Get("GetDrink") + drinkId;
+
+        var json = await client.GetStringAsync(drinkAPI);
+
+        var drinkInfo = JsonSerializer.Deserialize<Drink>(json).DrinkInfo[0];
+
+        List<DrinkInfoDTO> list = new List<DrinkInfoDTO>();
+
+        foreach (PropertyInfo prop in drinkInfo.GetType().GetProperties())
+        {
+            var propName = prop.Name;
+
+            if (!string.IsNullOrEmpty(prop.GetValue(drinkInfo)?.ToString()))
+            {
+                var propValue = prop.GetValue(drinkInfo);
+
+                list.Add(new DrinkInfoDTO
+                {
+                    Key = propName,
+                    Value = propValue.ToString()
+                });
+            }
+        }
+
+        TableVisualizerEngine.DisplayTable(list);
     }
 
 }

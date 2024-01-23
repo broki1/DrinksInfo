@@ -9,7 +9,7 @@ internal class TableVisualizerEngine
     {
         Console.Clear();
 
-        ConsoleTableBuilder.From(table).WithColumn(tableName).WithFormat(ConsoleTableBuilderFormat.Alternative).ExportAndWriteLine(TableAligntment.Center);
+        ConsoleTableBuilder.From(table).WithColumn(tableName).ExportAndWriteLine(TableAligntment.Center);
 
     }
 

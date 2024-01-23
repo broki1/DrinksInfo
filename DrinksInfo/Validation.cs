@@ -18,11 +18,11 @@ internal class Validation
         return false;
     }
 
-    internal static bool ValidInput(string userInput, List<Drink> drinks)
+    internal static bool ValidInput(string userInput, List<DrinkMenuItem> drinks)
     {
         foreach (var drink in drinks)
         {
-            if (userInput.Equals(drink.Name, StringComparison.OrdinalIgnoreCase))
+            if (userInput.Equals(drink.ID, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }

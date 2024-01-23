@@ -7,9 +7,11 @@ internal class UserInput
     {
         var categories = await DrinkService.GetCategories();
 
-        await Console.Out.WriteLineAsync("Choose category:");
+        await Console.Out.WriteLineAsync("Choose category (enter '0' to end application):");
 
         var userInput = Console.ReadLine().Trim();
+
+        if (userInput == "0") return "0";
 
         while (!Validation.ValidInput(userInput, categories))
         {
@@ -24,9 +26,11 @@ internal class UserInput
     {
         var drinks = await DrinkService.GetDrinks(category);
 
-        await Console.Out.WriteLineAsync("Choose drink:");
+        await Console.Out.WriteLineAsync("Choose drink (enter '0' to return to category menu):");
 
         var userInput = Console.ReadLine().Trim();
+
+        if (userInput == "0") return "0";
 
         while (!Validation.ValidInput(userInput, drinks))
         {

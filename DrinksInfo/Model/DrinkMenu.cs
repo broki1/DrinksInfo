@@ -2,4 +2,4 @@
 
 namespace DrinksInfo.Model;
 
-internal record class DrinkMenu([property: JsonPropertyName("drinks")] List<Drink> Drinks);
+internal record class DrinkMenu([property: JsonPropertyName("drinks")] List<DrinkMenuItem> Drinks);
